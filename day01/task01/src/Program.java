@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Program {
+public class Program{
 
     private static long calculate(int a, int b, char sign) {
         if (sign == '+')
