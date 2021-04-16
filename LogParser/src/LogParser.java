@@ -64,21 +64,8 @@ public class LogParser implements IPQuery {
 
     @Override
     public int getNumberOfUniqueIPs(Date after, Date before) {
-        int count = 0;
-        if (after == null && before == null) {
-            return logs.size() - 1;
-        }
-        for (Log log : logs) {
-            if (after == null) {
-                if (log.getDate().compareTo(before) < 0)
-                    count++;
-            } else if (before == null) {
-                if (log.getDate().compareTo(after) >= 0)
-                    count++;
-            } else if ((log.getDate().compareTo(after) >= 0) && (log.getDate().compareTo(before) < 0))
-                count++;
-        }
-        return count;
+        Set<String> set = getUniqueIPs(after, before);
+        return set.size();
     }
 
     @Override

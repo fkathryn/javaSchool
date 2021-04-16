@@ -1,10 +1,13 @@
+import java.io.FileInputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class Main {
+
+    static Logger LOGGER;
 
     public static void main(String[] args) {
 
@@ -19,7 +22,7 @@ public class Main {
             dateBefore = new SimpleDateFormat(format).parse(before);
 
             System.out.println("*** getNumberOfUniqueIPs() ***");
-            System.out.println(parse.getNumberOfUniqueIPs(null, dateBefore));
+            System.out.println(parse.getNumberOfUniqueIPs(null, null));
 
             System.out.println("*** getUniqueIPs() ***");
             Set<String> set = parse.getUniqueIPs(null, null);
