@@ -1,11 +1,8 @@
 import java.io.*;
 import java.util.ArrayList;
 
-
 public class LogParser {
-
-    private ArrayList<Log> logs;
-    private int counter = 0;
+    private final ArrayList<Log> logs;
 
     public LogParser(String filename) {
         BufferedReader reader;
@@ -15,15 +12,15 @@ public class LogParser {
             String line = "";
             while ((line = reader.readLine()) != null) {
                 String[] valuesLine = line.split("\t");
-                parseLogs(valuesLine);
+                logsToArray(valuesLine);
             }
-            selectionByDoneTask();
+            writeDoneTaskToFile();
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private void parseLogs(String[] line) {
+    private void logsToArray(String[] line) {
         Log log = new Log();
         log.setIp(line[0]);
         log.setUsername(line[1]);
@@ -32,19 +29,13 @@ public class LogParser {
         log.setStatus(line[4]);
         logs.add(log);
     }
-
-    private void selectionByDoneTask() {
-
-        try (FileWriter writer = new FileWriter("src/done_task.log", false)) {
-
+    private void writeDoneTaskToFile() {
+        FileWriter writer;
+        try {
+            writer = new FileWriter("src/done_task.log", false);
             for (int i = 0; i < logs.size(); i++) {
-                System.out.println(logs.get(i).getEvent());
-                if (logs.get(i).getEvent().equals("DONE_TASK")) {
-                    String text = logs.get(i).getIp()
-                            + logs.get(i).getUsername()
-                            + logs.get(i).getDate()
-                            + logs.get(i).getEvent()
-                            + logs.get(i).getStatus();
+                String text = selectionByDoneTask(logs.get(i));
+                if (text.length() != 0) {
                     writer.write(text + '\n');
                 }
                 writer.flush();
@@ -52,5 +43,17 @@ public class LogParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private String selectionByDoneTask(Log log) {
+        String text = "";
+        if (log.getEvent().length() > 9 && log.getEvent().substring(0, 9).equals("DONE_TASK") && log.getStatus().equals("OK")) {
+            text = log.getIp() + "\t"
+                    + log.getUsername() + "\t"
+                    + log.getDate() + "\t"
+                    + log.getEvent() + "\t"
+                    + log.getStatus();
+
+        }
+        return text;
     }
 }
