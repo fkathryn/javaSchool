@@ -26,6 +26,7 @@ public class LogParser {
         log.setUsername(line[1]);
         log.setDate(line[2]);
         log.setEvent(line[3]);
+        System.out.println(log.getEvent());
         log.setStatus(line[4]);
         logs.add(log);
     }
@@ -46,13 +47,15 @@ public class LogParser {
     }
     private String selectionByDoneTask(Log log) {
         String text = "";
-        if (log.getEvent().length() > 9 && log.getEvent().substring(0, 9).equals("DONE_TASK") && log.getStatus().equals("OK")) {
-            text = log.getIp() + "\t"
+        switch (log.getEvent()) {
+            case DONE_TASK, SOLVE_TASK -> text = log.getIp() + "\t"
                     + log.getUsername() + "\t"
                     + log.getDate() + "\t"
-                    + log.getEvent() + "\t"
+                    + log.getEvent() + " " + log.getNumberTask() + "\t"
                     + log.getStatus();
-
+        }
+        switch (log.getStatus()) {
+            case ERROR, FAILED -> text = "";
         }
         return text;
     }

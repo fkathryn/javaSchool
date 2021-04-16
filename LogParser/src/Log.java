@@ -1,10 +1,32 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Log {
     private String ip;
     private String username;
-    private String date;
-    private String event;
-    private String status;
+    private Date date;
+    private Event event;
+    private Status status;
+    private int numberTask;
 
+
+    enum Event {
+        LOGIN,
+        DOWNLOAD_PLUGIN,
+        WRITE_MESSAGE,
+        SOLVE_TASK,
+        DONE_TASK
+    }
+    enum Status {
+        OK,
+        FAILED,
+        ERROR
+    };
+
+    public void setNumberTask(String numberTask) {
+        this.numberTask = Integer.parseInt(numberTask);
+    }
     public void setIp(String ip) {
         this.ip = ip;
     }
@@ -12,13 +34,35 @@ public class Log {
         this.username = username;
     }
     public void setDate(String date) {
-        this.date = date;
+        try {
+            String format = "dd.mm.yyyy hh:mm:ss";
+            this.date = new SimpleDateFormat(format).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
     public void setEvent(String event) {
-        this.event = event;
+        switch (event) {
+            case "LOGIN" -> this.event = Event.LOGIN;
+            case "DOWNLOAD_PLUGIN" -> this.event = Event.DOWNLOAD_PLUGIN;
+            case "WRITE_MESSAGE" -> this.event = Event.WRITE_MESSAGE;
+        }
+        if (this.event == null) {
+            if (event.substring(0, 10).equals("SOLVE_TASK")) {
+                this.event = Event.SOLVE_TASK;
+                setNumberTask(event.substring(11));
+            } else if (event.substring(0, 9).equals("DONE_TASK")) {
+                this.event = Event.DONE_TASK;
+                setNumberTask(event.substring(10));
+            }
+        }
     }
     public void setStatus(String status) {
-        this.status = status;
+        switch (status) {
+            case "OK" -> this.status = Status.OK;
+            case "FAILED" -> this.status = Status.FAILED;
+            case "ERROR" -> this.status = Status.ERROR;
+        }
     }
     public String getIp() {
         return ip;
@@ -26,13 +70,16 @@ public class Log {
     public String getUsername() {
         return username;
     }
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
-    public String getEvent() {
+    public Event getEvent() {
         return event;
     }
-    public String getStatus() {
+    public Status getStatus() {
         return status;
+    }
+    public int getNumberTask() {
+        return numberTask;
     }
 }
