@@ -10,22 +10,12 @@ public class Log {
     private Status status;
     private int numberTask;
 
-
-    enum Event {
-        LOGIN,
-        DOWNLOAD_PLUGIN,
-        WRITE_MESSAGE,
-        SOLVE_TASK,
-        DONE_TASK
-    }
-    enum Status {
-        OK,
-        FAILED,
-        ERROR
-    };
-
     public void setNumberTask(String numberTask) {
-        this.numberTask = Integer.parseInt(numberTask);
+        try {
+            this.numberTask = Integer.parseInt(numberTask);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
     }
     public void setIp(String ip) {
         this.ip = ip;
