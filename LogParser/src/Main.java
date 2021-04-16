@@ -1,13 +1,9 @@
-import java.io.FileInputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
-import java.util.logging.Logger;
 
 public class Main {
-
-    static Logger LOGGER;
 
     public static void main(String[] args) {
 

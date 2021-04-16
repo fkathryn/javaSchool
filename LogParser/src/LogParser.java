@@ -3,16 +3,22 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public class LogParser implements IPQuery {
+
+    private static Logger logger = Logger.getLogger(LogParser.class.getName());
+
     private final ArrayList<Log> logs;
 
     public LogParser(String filename) {
         BufferedReader reader;
         this.logs = new ArrayList<>(100);
         try {
+            logger.info("open the file for read");
             reader = new BufferedReader(new FileReader(filename));
             String line;
+            logger.info("starting reading from file");
             while ((line = reader.readLine()) != null) {
                 String[] valuesLine = line.split("\t");
                 logsToArray(valuesLine);
@@ -35,7 +41,9 @@ public class LogParser implements IPQuery {
     private void writeDoneTaskToFile() {
         FileWriter writer;
         try {
+            logger.info("creating a file to write");
             writer = new FileWriter("src/done_tasks.log", false);
+            logger.info("writing to the created file");
             for (int i = 0; i < logs.size(); i++) {
                 String text = selectionByDoneTask(logs.get(i));
                 if (text.length() != 0) {
