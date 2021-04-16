@@ -7,7 +7,6 @@ public class MyArrayList<T> implements Iterable<T> {
     private int size;
     private int capacity;
     private T[] array;
-    private int pointer = 0;
 
     public MyArrayList() {
         this.size = 0;
