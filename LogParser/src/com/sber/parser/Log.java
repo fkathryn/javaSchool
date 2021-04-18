@@ -1,3 +1,7 @@
+package com.sber.parser;
+
+import com.sber.parser.Status;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

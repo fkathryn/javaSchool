@@ -1,3 +1,5 @@
+package com.sber.parser;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,7 +9,7 @@ import java.util.logging.Logger;
 
 public class LogParser implements IPQuery {
 
-    private static Logger logger = Logger.getLogger(LogParser.class.getName());
+    private static final Logger logger = Logger.getLogger(LogParser.class.getName());
 
     private final ArrayList<Log> logs;
 
@@ -29,6 +31,7 @@ public class LogParser implements IPQuery {
             e.printStackTrace();
         }
     }
+
     private void logsToArray(String[] line) {
         Log log = new Log();
         log.setIp(line[0]);
@@ -38,14 +41,15 @@ public class LogParser implements IPQuery {
         log.setStatus(line[4]);
         logs.add(log);
     }
+
     private void writeDoneTaskToFile() {
         FileWriter writer;
         try {
             logger.info("creating a file to write");
             writer = new FileWriter("src/done_tasks.log", false);
             logger.info("writing to the created file");
-            for (int i = 0; i < logs.size(); i++) {
-                String text = selectionByDoneTask(logs.get(i));
+            for (Log log : logs) {
+                String text = selectionByDoneTask(log);
                 if (text.length() != 0) {
                     writer.write(text + '\n');
                 }
@@ -55,6 +59,7 @@ public class LogParser implements IPQuery {
             e.printStackTrace();
         }
     }
+
     private String selectionByDoneTask(Log log) {
         String text = "";
         switch (log.getEvent()) {

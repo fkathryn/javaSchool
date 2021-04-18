@@ -1,3 +1,7 @@
+package com.sber.parser;
+
+import com.sber.parser.Status;
+
 import java.util.Date;
 import java.util.Set;
 

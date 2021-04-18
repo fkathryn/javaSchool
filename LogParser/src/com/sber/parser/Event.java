@@ -1,3 +1,5 @@
+package com.sber.parser;
+
 public enum Event {
     LOGIN,
     DOWNLOAD_PLUGIN,
