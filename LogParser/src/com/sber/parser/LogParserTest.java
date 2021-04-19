@@ -11,18 +11,26 @@ import java.util.Set;
 
 class LogParserTest {
 
-    @Test
-     void getNumberOfUniqueIPs() throws ParseException {
-        System.out.println("*** getNumberOfUniqueIPs() ***");
+    private final LogParser parse = new LogParser("src/log.log");
+    private final String format = "dd.mm.yyyy hh:mm:ss";
+    private String after = "30.08.2012 16:08:40";
+    private String before = "12.12.2013 21:56:30";
+    private Date dateAfter;
+    private Date dateBefore;
 
-        LogParser parse = new LogParser("src/log.log");
-        Date dateAfter;
-        Date dateBefore;
-        String format = "dd.mm.yyyy hh:mm:ss";
-        String after = "30.08.2012 16:08:40";
-        String before = "12.12.2013 21:56:30";
+    LogParserTest() throws ParseException {
         dateAfter = new SimpleDateFormat(format).parse(after);
         dateBefore = new SimpleDateFormat(format).parse(before);
+    }
+
+    private void printResult(Set<String> set) {
+        for (String str : set) {
+            System.out.println(str);
+        }
+    }
+
+    @Test
+     void getNumberOfUniqueIPs() throws ParseException {
 
         int expected = parse.getNumberOfUniqueIPs(dateAfter, dateBefore);
         int actual = 2;
@@ -32,83 +40,75 @@ class LogParserTest {
         actual =  6;
         Assertions.assertEquals(expected, actual);
 
+        after = "01.01.2002 00:09:00";
+        before = "31.12.2015 01:00:00";
+        dateAfter = new SimpleDateFormat(format).parse(after);
+        dateBefore = new SimpleDateFormat(format).parse(before);
+
+        expected = parse.getNumberOfUniqueIPs(dateAfter, dateBefore);
+        actual = 4;
+        Assertions.assertEquals(expected, actual);
     }
 
     @org.junit.jupiter.api.Test
-    void getUniqueIPs() throws ParseException {
-//        LogParser parse = new LogParser("src/log.log");
-//        System.out.println("*** getUniqueIPs() ***");
-//
-//        Date dateAfter;
-//        Date dateBefore;
-//        String format = "dd.mm.yyyy hh:mm:ss";
-//        String after = "30.08.2012 16:08:40";
-//        String before = "12.12.2013 21:56:30";
-//        dateAfter = new SimpleDateFormat(format).parse(after);
-//        dateBefore = new SimpleDateFormat(format).parse(before);
-//
-//        Set<String> set = parse.getUniqueIPs(null, null);
-//        for (String str : set) {
-//            System.out.println(str);
-//        }
+    void getUniqueIPs() {
+        Set<String> set = parse.getUniqueIPs(null, null);
+        printResult(set);
+        System.out.println("-----------");
+        set = parse.getUniqueIPs(dateAfter, null);
+        printResult(set);
+        System.out.println("-----------");
+        set = parse.getUniqueIPs(dateAfter, dateBefore);
+        printResult(set);
     }
 
     @org.junit.jupiter.api.Test
-    void getIPsForUser() throws ParseException {
-//        LogParser parse = new LogParser("src/log.log");
-//        System.out.println("*** getIPsForUser() ***");
-//
-//        Date dateAfter;
-//        Date dateBefore;
-//        String format = "dd.mm.yyyy hh:mm:ss";
-//        String after = "30.08.2012 16:08:40";
-//        String before = "12.12.2013 21:56:30";
-//        dateAfter = new SimpleDateFormat(format).parse(after);
-//        dateBefore = new SimpleDateFormat(format).parse(before);
-//
-//        Set<String> set = parse.getIPsForUser("Eduard Petrovich Morozko", null, null);
-//        for (String str : set) {
-//            System.out.println(str);
-//        }
+    void getIPsForUser() {
+        Set<String> set = parse.getIPsForUser("Eduard Petrovich Morozko", null, null);
+        printResult(set);
+        System.out.println("----------");
+        set = parse.getIPsForUser("Eduard Petrovich Morozko", dateAfter, dateBefore);
+        printResult(set);
+        System.out.println("----------");
+        set = parse.getIPsForUser("Eduard Petrovich Morozko", null, dateBefore);
+        printResult(set);
+        System.out.println("----------");
+        set = parse.getIPsForUser("fkathryn", null, dateBefore);
+        printResult(set);
+        System.out.println("----------");
+        set = parse.getIPsForUser("Vasya Pupkin", dateAfter, dateBefore);
+        printResult(set);
     }
 
     @org.junit.jupiter.api.Test
-    void getIPsForEvent() throws ParseException {
-//        LogParser parse = new LogParser("src/log.log");
-//        System.out.println("*** getIPsForEvent() ***");
-//
-//        Date dateAfter;
-//        Date dateBefore;
-//        String format = "dd.mm.yyyy hh:mm:ss";
-//        String after = "30.08.2012 16:08:40";
-//        String before = "12.12.2013 21:56:30";
-//        dateAfter = new SimpleDateFormat(format).parse(after);
-//        dateBefore = new SimpleDateFormat(format).parse(before);
-//
-//        Event event = Event.LOGIN;
-//        Set<String> set = parse.getIPsForEvent(event, null, dateBefore);
-//        for (String str : set) {
-//            System.out.println(str);
-//        }
+    void getIPsForEvent() {
+        Set<String> set;
+        for (Event event : Event.values()) {
+            System.out.println(Event.valueOf(event.name()));
+            set = parse.getIPsForEvent(event, null, dateBefore);
+            printResult(set);
+            System.out.println("----------");
+            set = parse.getIPsForEvent(event, dateAfter, dateBefore);
+            printResult(set);
+            System.out.println("----------");
+            set = parse.getIPsForEvent(event, null, null);
+            printResult(set);
+        }
     }
 
     @org.junit.jupiter.api.Test
-    void getIPsForStatus() throws ParseException {
-//        LogParser parse = new LogParser("src/log.log");
-//        System.out.println("*** getIPsForStatus() ***");
-//
-//        Date dateAfter;
-//        Date dateBefore;
-//        String format = "dd.mm.yyyy hh:mm:ss";
-//        String after = "30.08.2012 16:08:40";
-//        String before = "12.12.2013 21:56:30";
-//        dateAfter = new SimpleDateFormat(format).parse(after);
-//        dateBefore = new SimpleDateFormat(format).parse(before);
-//
-//        Status status = Status.OK;
-//        Set<String> set = parse.getIPsForStatus(status, dateAfter, dateBefore);
-//        for (String str : set) {
-//            System.out.println(str);
-//        }
+    void getIPsForStatus() {
+        Set<String> set;
+        for (Status status : Status.values()) {
+            System.out.println(Status.valueOf(status.name()));
+            set = parse.getIPsForStatus(status, null, dateBefore);
+            printResult(set);
+            System.out.println("----------");
+            set = parse.getIPsForStatus(status, dateAfter, dateBefore);
+            printResult(set);
+            System.out.println("----------");
+            set = parse.getIPsForStatus(status, null, null);
+            printResult(set);
+        }
     }
 }
