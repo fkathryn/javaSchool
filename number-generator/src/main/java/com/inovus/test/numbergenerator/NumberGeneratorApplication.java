@@ -9,6 +9,6 @@ public class NumberGeneratorApplication {
     public static void main(String[] args) {
         SpringApplication.run(NumberGeneratorApplication.class, args);
         NumberGenerator number = new NumberGenerator();
+        System.out.println(number.getResultNumber());
     }
-
 }

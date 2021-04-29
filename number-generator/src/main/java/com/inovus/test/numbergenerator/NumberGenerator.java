@@ -1,15 +1,16 @@
 package com.inovus.test.numbergenerator;
 
-import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 public class NumberGenerator {
-    private final char[] pool = new char[] {'A', 'Е', 'Т', 'О', 'Р', 'Н', 'У', 'К', 'Х', 'С', 'В', 'М'};
+    private final String[] pool = new String[] {"A", "E", "Т", "О", "Р", "Н", "У", "К", "Х", "С", "В", "М"};
     private final String codeKazan = "116 RUS";
     private String resultNumber;
-    private SecureRandom random = new SecureRandom();
 
     NumberGenerator() {
         generateRandomNumber();
@@ -17,12 +18,19 @@ public class NumberGenerator {
 
     private void generateRandomNumber() {
         Random rand = new Random();
-        int number = randomNumbers();
-        System.out.println(pool[rand.nextInt(pool.length)] + " " + number + " " + codeKazan);
+        resultNumber = String.format("%s%d%d%d%s%s %s",
+                pool[rand.nextInt(pool.length)],
+                rand.nextInt(9),
+                rand.nextInt(9),
+                rand.nextInt(9),
+                pool[rand.nextInt(pool.length)],
+                pool[rand.nextInt(pool.length)],
+                codeKazan
+        );
+        System.out.println(resultNumber);
     }
 
-    private int randomNumbers() {
-        int result = 0;
-        return result;
+    public String getResultNumber() {
+        return resultNumber;
     }
 }
